@@ -7,12 +7,14 @@ package mancala;
 public abstract class GameRules {
     private MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
+    private int freeMove;
 
     /**
      * Constructor to initialize the game board.
      */
     public GameRules() {
         gameBoard = new MancalaDataStructure();
+        
     }
 
     /**
@@ -102,6 +104,14 @@ public abstract class GameRules {
     public void registerPlayers(Player one, Player two) {
         // this method can be implemented in the abstract class.
 
+        Store playerStoreOne = new Store();
+        Store playerStoreTwo = new Store();
+
+        gameBoard.setStore(playerStoreOne, 1);
+        gameBoard.setStore(playerStoreTwo, 2);
+
+        playerStoreOne.setOwner(one);
+        playerStoreTwo.setOwner(two);
 
         /* make a new store in this method, set the owner
          then use the setStore(store,playerNum) method of the data structure*/
@@ -113,6 +123,31 @@ public abstract class GameRules {
     public void resetBoard() {
         gameBoard.setUpPits();
         gameBoard.emptyStores();
+    }
+
+    public int getSideCount(final int pitNum) throws PitNotFoundException{
+        if (pitNum > 12 || pitNum < 1) {
+            throw new PitNotFoundException("Pit not found!");
+        }
+        int total = 0;
+            if (pitNum >= 1 && pitNum <= 6) {
+                for (int i = 1; i <= 6; i++){
+                    total += getNumStones(i);
+                }
+            } else if (pitNum >= 7 && pitNum <= 12) {
+                for (int i = 7; i <= 12; i++){
+                    total += getNumStones(i);
+                }
+            }
+        
+        return total;
+    }
+
+    public void setFreeMove(final int set) {
+        freeMove = set;
+    }
+    public int getFreeMove() {
+        return freeMove;
     }
 
     @Override

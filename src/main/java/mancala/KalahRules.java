@@ -1,6 +1,8 @@
 package mancala;
 
-public class KalahRules extends GameRules {
+import java.io.Serializable;
+
+public class KalahRules extends GameRules implements Serializable{
 
 private MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
@@ -35,7 +37,8 @@ private MancalaDataStructure gameBoard;
     }
     public int distributeStones(int startingPoint){
         int whichStore = 0;
-        if (startingPoint >= 0 && startingPoint <= 5) {
+        if (startingPoint >= 1 && startingPoint <= 6) {
+            startingPoint--; // doing what pitPos is supposed to do but its private :/
             whichStore = 1;
         } else if(startingPoint >= 7 && startingPoint <= 12) {
             whichStore = 2;

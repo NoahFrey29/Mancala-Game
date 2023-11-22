@@ -1,6 +1,8 @@
 package mancala;
 
-public class AyoRules {
+import java.io.Serializable;
+
+public class AyoRules extends GameRules implements Serializable {
   
     private MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
