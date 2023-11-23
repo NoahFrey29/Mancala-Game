@@ -46,38 +46,39 @@ private MancalaDataStructure gameBoard = getDataStructure();
         }
         int distributing;
         int placeHolder = startingPoint;
-        //distributing = gameBoard.removeStones(startingPoint);
-        
+        System.out.println("whichStore = " + whichStore);
         distributing = gameBoard.removeStones(startingPoint);
         gameBoard.setIterator(startingPoint, whichStore, false);
         Countable currentSpot;
         for (int i = 0; i < distributing; i++){
             currentSpot = gameBoard.next();
             currentSpot.addStone();
+            System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
             placeHolder++;
-            if (placeHolder == 14) {
-                placeHolder = 0;
+            if (placeHolder >= 13) {
+                placeHolder = 1;
             }
         }
-/* 
-        final int stoppingPoint = index+1; // stopping point will just be index
+        System.out.println("Ending pit #" + placeHolder);
+ 
+        final int stoppingPoint = gameBoard.getIterator()+1; // stopping point will just be index
+        System.out.println("iteratorPos = " + stoppingPoint);
         if ((stoppingPoint >= 1 && stoppingPoint <= 6) && whichStore == 1){ // on ending pit, call capture stones
-            if (pits.get(stoppingPoint-1).getStoneCount() == ONE) {
-                placeHolder += captureStones(stoppingPoint);
+            if (getNumStones(stoppingPoint) == 1) {
+                distributing += captureStones(stoppingPoint);
             }           
         } else if ((stoppingPoint >= 7 && stoppingPoint <= 12) && whichStore == 2){
-            if (pits.get(stoppingPoint-1).getStoneCount() == ONE) {
-                placeHolder += captureStones(stoppingPoint);
+            if (getNumStones(stoppingPoint) == 1) {
+                distributing += captureStones(stoppingPoint);
             }   
         }
-        */
         return distributing; // returns total number distributed
     }
     public int captureStones(final int stoppingPoint) {
         final int min = 1;
-        final int max = 13;
+        final int max = 12;
         final int correspondingNum = max - stoppingPoint + min;
-        final int captured = gameBoard.removeStones(correspondingNum-1); // put stones in correct store
+        final int captured = gameBoard.removeStones(correspondingNum); // put stones in correct store
         if (stoppingPoint >= 1 && stoppingPoint <=6){
             gameBoard.addToStore(1, captured);
         } else if (stoppingPoint >= 7 && stoppingPoint <=12){

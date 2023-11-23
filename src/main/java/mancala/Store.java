@@ -34,7 +34,7 @@ public class Store implements Countable, Serializable{
         return storeStones;
     }
     public int removeStones(){
-        return 0;
+        return emptyStore();
     }
 
     @Override
