@@ -28,7 +28,7 @@ public class Player implements Serializable{
         return playerStore;
     }
     public int getStoreCount() {
-        return playerStore.getTotalStones();
+        return playerStore.getStoneCount();
     }
 
     public void addStoreCount(final Player player, final int amount) {
@@ -38,7 +38,7 @@ public class Player implements Serializable{
 
     @Override
     public String toString() {
-        return "Player: " + playerName + "\nStore: " + playerStore;
+        return "Player: " + playerName;// + "\nStore: " + playerStore.getStoneCount(); // gives error
     }
 
 }

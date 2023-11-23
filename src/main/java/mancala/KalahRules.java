@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class KalahRules extends GameRules implements Serializable{
 
-private MancalaDataStructure gameBoard;
+private MancalaDataStructure gameBoard = getDataStructure();
     private int currentPlayer = 1; // Player number (1 or 2)
 
     /**
@@ -37,16 +37,16 @@ private MancalaDataStructure gameBoard;
     }
     public int distributeStones(int startingPoint){
         int whichStore = 0;
+        System.out.println("Starting point:" + startingPoint);
         if (startingPoint >= 1 && startingPoint <= 6) {
-            startingPoint--; // doing what pitPos is supposed to do but its private :/
+            //startingPoint--; // doing what pitPos is supposed to do but its private :/
             whichStore = 1;
         } else if(startingPoint >= 7 && startingPoint <= 12) {
             whichStore = 2;
         }
         int distributing;
-        int placeHolder;
+        int placeHolder = startingPoint;
         //distributing = gameBoard.removeStones(startingPoint);
-        int index = startingPoint-1; //index controls what pit you are on
         
         distributing = gameBoard.removeStones(startingPoint);
         gameBoard.setIterator(startingPoint, whichStore, false);
@@ -54,6 +54,10 @@ private MancalaDataStructure gameBoard;
         for (int i = 0; i < distributing; i++){
             currentSpot = gameBoard.next();
             currentSpot.addStone();
+            placeHolder++;
+            if (placeHolder == 14) {
+                placeHolder = 0;
+            }
         }
 /* 
         final int stoppingPoint = index+1; // stopping point will just be index

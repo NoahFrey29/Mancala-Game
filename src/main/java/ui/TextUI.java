@@ -77,8 +77,8 @@ public class TextUI implements Serializable{
                 }
             }
             
-            
-            System.out.println("Current player = " + getCurrentPlayer());
+            System.out.println(textGame.getCurrentPlayer());
+            System.out.println("Current player = " + textGame.getCurrentPlayer());
 
         }
         

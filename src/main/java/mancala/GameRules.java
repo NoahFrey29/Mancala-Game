@@ -14,7 +14,7 @@ public abstract class GameRules {
      */
     public GameRules() {
         gameBoard = new MancalaDataStructure();
-        
+
     }
 
     /**
@@ -153,6 +153,17 @@ public abstract class GameRules {
     @Override
     public String toString() {
         // Implement toString() method logic here.
-        return "";
+        int count = 1;
+        int pitCount = 1;
+        final StringBuilder boardString = new StringBuilder("Board\n");
+        for (int i = 1; i <= 12; i++) {
+            boardString.append("Pit ").append(pitCount++).append(": ").append(gameBoard.getNumStones(i)).append("\n");
+            if (i == 6) {
+                boardString.append("Store " + count++ + ":").append(gameBoard.getStoreCount(1)).append("\n");
+            } else if (i == 12) {
+                boardString.append("Store " + count++ + ":").append(gameBoard.getStoreCount(2)).append("\n");
+            }
+        }
+        return boardString.toString();
     }
 }

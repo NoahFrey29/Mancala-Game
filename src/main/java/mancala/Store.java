@@ -22,9 +22,6 @@ public class Store implements Countable, Serializable{
     public void addStones(final int amount) {
         storeStones += amount;
     }
-    public int getTotalStones(){
-        return storeStones;
-    }
     public int emptyStore(){
         final int temp = storeStones;
         storeStones = 0;
