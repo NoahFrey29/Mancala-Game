@@ -15,6 +15,7 @@ private MancalaDataStructure gameBoard = getDataStructure();
      * @return The number of stones added to the player's store.
      * @throws InvalidMoveException If the move is invalid.
      */
+    @Override
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {
         // check exception for invalid move
         if (startPit > 12 || startPit < 1){
@@ -35,6 +36,8 @@ private MancalaDataStructure gameBoard = getDataStructure();
         
         return afterDistribute-beforeDistribute;
     }
+    
+    @Override
     public int distributeStones(int startingPoint){
         int whichStore = 0;
         System.out.println("Starting point:" + startingPoint);
@@ -67,13 +70,15 @@ private MancalaDataStructure gameBoard = getDataStructure();
             if (getNumStones(stoppingPoint) == 1) {
                 distributing += captureStones(stoppingPoint);
             }           
-        } else if ((stoppingPoint >= 7 && stoppingPoint <= 12) && whichStore == 2){
-            if (getNumStones(stoppingPoint) == 1) {
-                distributing += captureStones(stoppingPoint);
+        } else if ((stoppingPoint >= 8 && stoppingPoint <= 13) && whichStore == 2){
+            if (getNumStones(stoppingPoint-1) == 1) {
+                distributing += captureStones(stoppingPoint-1);
             }   
         }
         return distributing; // returns total number distributed
     }
+
+    @Override
     public int captureStones(final int stoppingPoint) {
         final int min = 1;
         final int max = 12;

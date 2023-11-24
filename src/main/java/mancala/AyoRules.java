@@ -7,6 +7,7 @@ public class AyoRules extends GameRules implements Serializable {
     private MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
 
+    @Override
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {
         // check exception for invalid move
         if (startPit > 12 || startPit < 1){
@@ -27,9 +28,54 @@ public class AyoRules extends GameRules implements Serializable {
         
         return afterDistribute-beforeDistribute;
     }
+
+    @Override
     public int distributeStones(int startingPoint){
-        return 0;
+        int whichStore = 0;
+        System.out.println("Starting point:" + startingPoint);
+        if (startingPoint >= 1 && startingPoint <= 6) {
+            //startingPoint--; // doing what pitPos is supposed to do but its private :/
+            whichStore = 1;
+        } else if(startingPoint >= 7 && startingPoint <= 12) {
+            whichStore = 2;
+        }
+        int distributing;
+        int placeHolder = startingPoint;
+        System.out.println("whichStore = " + whichStore);
+        distributing = gameBoard.removeStones(startingPoint);
+        gameBoard.setIterator(startingPoint, whichStore, false);
+        Countable currentSpot;
+        do {
+            for (int i = 0; i < distributing; i++){
+                currentSpot = gameBoard.next();
+                currentSpot.addStone();
+                System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                placeHolder++;
+                if (placeHolder >= 13) {
+                    placeHolder = 1;
+                }
+            }
+            System.out.println("The current board looks like");
+            System.out.println(gameBoard.toString());
+        } while (getNumStones(placeHolder) != 0);
+
+        System.out.println("Ending pit #" + placeHolder);
+ 
+        final int stoppingPoint = gameBoard.getIterator()+1; // stopping point will just be index
+        System.out.println("iteratorPos = " + stoppingPoint);
+        if ((stoppingPoint >= 1 && stoppingPoint <= 6) && whichStore == 1){ // on ending pit, call capture stones
+            if (getNumStones(stoppingPoint) == 1) {
+                distributing += captureStones(stoppingPoint);
+            }           
+        } else if ((stoppingPoint >= 7 && stoppingPoint <= 12) && whichStore == 2){
+            if (getNumStones(stoppingPoint) == 1) {
+                distributing += captureStones(stoppingPoint);
+            }   
+        }
+        return distributing; // returns total number distributed
     }
+
+    @Override
     public int captureStones(final int stoppingPoint) {
         final int min = 1;
         final int max = 12;
