@@ -12,7 +12,7 @@ public class MancalaGame implements Serializable {
 
     public MancalaGame(){
         players = new ArrayList<>(2);
-        gameRules = new KalahRules();
+        gameRules = new AyoRules();
         gameRules.getDataStructure().setUpPits(); // tentative call
     }
 

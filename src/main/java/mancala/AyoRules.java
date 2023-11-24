@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class AyoRules extends GameRules implements Serializable {
   
-    private MancalaDataStructure gameBoard;
+    private MancalaDataStructure gameBoard = getDataStructure();
     private int currentPlayer = 1; // Player number (1 or 2)
 
     @Override
@@ -39,24 +39,46 @@ public class AyoRules extends GameRules implements Serializable {
         } else if(startingPoint >= 7 && startingPoint <= 12) {
             whichStore = 2;
         }
-        int distributing;
+        int distributing = 0;
+        int looper = 0;
         int placeHolder = startingPoint;
         System.out.println("whichStore = " + whichStore);
-        distributing = gameBoard.removeStones(startingPoint);
-        gameBoard.setIterator(startingPoint, whichStore, false);
+        
+        gameBoard.setIterator(startingPoint, whichStore, true);
         Countable currentSpot;
         do {
-            for (int i = 0; i < distributing; i++){
-                currentSpot = gameBoard.next();
-                currentSpot.addStone();
-                System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
-                placeHolder++;
-                if (placeHolder >= 13) {
-                    placeHolder = 1;
+            looper = gameBoard.removeStones(placeHolder);
+            distributing += looper;
+            for (int i = 0; i < looper; i++){
+                if (whichStore == 1 && placeHolder == 7) {
+                    System.out.println("Going to add to store #1");
+                    currentSpot = gameBoard.next();
+                    currentSpot.addStone();
+                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                    if (placeHolder >= 13) {
+                        placeHolder = 1;
+                    }
+                } else if (whichStore == 2 && placeHolder == 13) {
+                    System.out.println("Going to add to store #2");
+                    currentSpot = gameBoard.next();
+                    currentSpot.addStone();
+                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                    if (placeHolder >= 13) {
+                        placeHolder = 1;
+                    }
+                } else {
+                    System.out.println("Going to add to a pit");
+                    currentSpot = gameBoard.next();
+                    currentSpot.addStone();
+                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                    placeHolder++;
+                    if (placeHolder >= 13) {
+                        placeHolder = 1;
+                    }
                 }
             }
             System.out.println("The current board looks like");
-            System.out.println(gameBoard.toString());
+            System.out.println(toString());
         } while (getNumStones(placeHolder) != 0);
 
         System.out.println("Ending pit #" + placeHolder);
