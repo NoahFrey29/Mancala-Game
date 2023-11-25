@@ -4,21 +4,29 @@ import java.io.Serializable;
 
 public class AyoRules extends GameRules implements Serializable {
   
-    private MancalaDataStructure gameBoard = getDataStructure();
-    private int currentPlayer = 1; // Player number (1 or 2)
+    final private MancalaDataStructure gameBoard;
+    final private static int THIRTEEN = 13;
+    //private int currentPlayer = 1; // Player number (1 or 2)
+
+    private static final long serialVersionUID = -6060757419404324290L;
+
+    public AyoRules() {
+        super();
+        gameBoard = getDataStructure();
+    }
 
     @Override
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {
         // check exception for invalid move
         if (startPit > 12 || startPit < 1){
             throw new InvalidMoveException("Your move was out of bounds. This is an invalid move!");
-        } else if ((startPit >= 1 && startPit <= 6) && playerNum == 2) {
+        } else if (startPit >= 1 && startPit <= 6 && playerNum == 2) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
-        } else if ((startPit >= 7 && startPit <= 12) && playerNum == 1) {
+        } else if (startPit >= 7 && startPit <= 12 && playerNum == 1) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
-        } else if ((startPit >= 1 && startPit <= 6) && playerNum == 2) {
+        } else if (startPit >= 1 && startPit <= 6 && playerNum == 2) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
-        } else if ((startPit >= 7 && startPit <= 12) && playerNum == 1) {
+        } else if (startPit >= 7 && startPit <= 12 && playerNum == 1) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
         }
         
@@ -30,7 +38,7 @@ public class AyoRules extends GameRules implements Serializable {
     }
 
     @Override
-    public int distributeStones(int startingPoint){
+    public int distributeStones(final int startingPoint){
         int whichStore = 0;
         System.out.println("Starting point:" + startingPoint);
         if (startingPoint >= 1 && startingPoint <= 6) {
@@ -48,36 +56,47 @@ public class AyoRules extends GameRules implements Serializable {
         Countable currentSpot;
         do {
             looper = gameBoard.removeStones(placeHolder);
+            System.out.println("Removing stones at pit " + placeHolder + "...");
             distributing += looper;
-            for (int i = 0; i < looper; i++){
-                if (whichStore == 1 && placeHolder == 7) {
+            while (looper > 0){
+                if (placeHolder == startingPoint) {
+                    placeHolder++;
+                    System.out.println("Skipping pit that was started on for placeholder...");
+                    System.out.println("Placeholder:" + placeHolder);
+                } else {
+
+                    if (whichStore == 1 && placeHolder == 7) {
                     System.out.println("Going to add to store #1");
                     currentSpot = gameBoard.next();
                     currentSpot.addStone();
-                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
-                    if (placeHolder >= 13) {
-                        placeHolder = 1;
-                    }
-                } else if (whichStore == 2 && placeHolder == 13) {
+                    looper--;
+                    //System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                } else if (whichStore == 2 && placeHolder == THIRTEEN) {
                     System.out.println("Going to add to store #2");
                     currentSpot = gameBoard.next();
                     currentSpot.addStone();
-                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
-                    if (placeHolder >= 13) {
+                    //System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                    if (placeHolder >= THIRTEEN) {
                         placeHolder = 1;
                     }
-                } else {
+                    looper--;
+                } 
+                if (looper > 0) {
                     System.out.println("Going to add to a pit");
                     currentSpot = gameBoard.next();
                     currentSpot.addStone();
-                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
                     placeHolder++;
-                    if (placeHolder >= 13) {
+                    if (placeHolder >= THIRTEEN) {
                         placeHolder = 1;
                     }
+                    System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                    looper--;
+                }
                 }
             }
+            System.out.println("Ending pit #" + placeHolder);
             System.out.println("The current board looks like");
+            
             System.out.println(toString());
         } while (getNumStones(placeHolder) != 0);
 
@@ -85,14 +104,10 @@ public class AyoRules extends GameRules implements Serializable {
  
         final int stoppingPoint = gameBoard.getIterator()+1; // stopping point will just be index
         System.out.println("iteratorPos = " + stoppingPoint);
-        if ((stoppingPoint >= 1 && stoppingPoint <= 6) && whichStore == 1){ // on ending pit, call capture stones
-            if (getNumStones(stoppingPoint) == 1) {
-                distributing += captureStones(stoppingPoint);
-            }           
-        } else if ((stoppingPoint >= 7 && stoppingPoint <= 12) && whichStore == 2){
-            if (getNumStones(stoppingPoint) == 1) {
-                distributing += captureStones(stoppingPoint);
-            }   
+        if (stoppingPoint >= 1 && stoppingPoint <= 6 && whichStore == 1 && getNumStones(stoppingPoint) == 1){ // on ending pit, call capture stones
+            distributing += captureStones(stoppingPoint);     
+        } else if (stoppingPoint >= 7 && stoppingPoint <= 12 && whichStore == 2 && getNumStones(stoppingPoint) == 1){
+            distributing += captureStones(stoppingPoint);  
         }
         return distributing; // returns total number distributed
     }

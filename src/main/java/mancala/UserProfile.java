@@ -4,49 +4,51 @@ import java.io.Serializable;
 
 public class UserProfile implements Serializable{
     
+    private static final long serialVersionUID = -594346698379271433L;
+
     private String userName;
     private int kalahGames;
     private int ayoGames;
-    private int KalahWon;
-    private int AyoWon;
+    private int kalahWon;
+    private int ayoWon;
 
     public UserProfile(){
         userName = "Default User";
         kalahGames = 0;
         ayoGames = 0;
-        KalahWon = 0;
-        AyoWon = 0;
+        kalahWon = 0;
+        ayoWon = 0;
     }
 
     public String getUsername(){
         return userName;
     }
-    void setUsername(String name){
+    void setUsername(final String name){
         userName = name;
     }
     public int getKalahPlayed(){
         return kalahGames;
     }
-    void setKalahPlayed(int games){
+    void setKalahPlayed(final int games){
         kalahGames = games;
     }
     public int getAyoPlayed(){
         return ayoGames;
     }
-    void setAyoPlayed(int games){
+    void setAyoPlayed(final int games){
         ayoGames = games;
     }
     public int getKalah(){
-        return KalahWon;
+        return kalahWon;
     }
-    void setKalahWon(int wins){
-        KalahWon = wins;
+    void setkalahWon(final int wins){
+        kalahWon = wins;
     }
     public int getAyo(){
-        return AyoWon;
+        return ayoWon;
     }
-    void setAyoWon(int wins){
-        AyoWon = wins;
+    void setayoWon(final int wins){
+        ayoWon = wins;
     }
     
     

@@ -2,7 +2,6 @@ package ui;
 
 import mancala.MancalaGame;
 import mancala.InvalidMoveException;
-import mancala.PitNotFoundException;
 import mancala.Player;
 import mancala.Saver;
 import java.io.IOException;

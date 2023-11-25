@@ -4,8 +4,17 @@ import java.io.Serializable;
 
 public class KalahRules extends GameRules implements Serializable{
 
-private MancalaDataStructure gameBoard = getDataStructure();
-    private int currentPlayer = 1; // Player number (1 or 2)
+    final private MancalaDataStructure gameBoard;
+    final private static int ONE = 1;
+    final private static int THIRTEEN = 13;
+    //private int currentPlayer = 1; // Player number (1 or 2)
+
+    private static final long serialVersionUID = 9136350261806655110L;
+
+    public KalahRules() {
+        super();
+        gameBoard = getDataStructure();
+    }
 
     /**
      * Perform a move and return the number of stones added to the player's store.
@@ -20,13 +29,13 @@ private MancalaDataStructure gameBoard = getDataStructure();
         // check exception for invalid move
         if (startPit > 12 || startPit < 1){
             throw new InvalidMoveException("Your move was out of bounds. This is an invalid move!");
-        } else if ((startPit >= 1 && startPit <= 6) && playerNum == 2) {
+        } else if (startPit >= 1 && startPit <= 6 && playerNum == 2) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
-        } else if ((startPit >= 7 && startPit <= 12) && playerNum == 1) {
+        } else if (startPit >= 7 && startPit <= 12 && playerNum == 1) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
-        } else if ((startPit >= 1 && startPit <= 6) && playerNum == 2) {
+        } else if (startPit >= 1 && startPit <= 6 && playerNum == 2) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
-        } else if ((startPit >= 7 && startPit <= 12) && playerNum == 1) {
+        } else if (startPit >= 7 && startPit <= 12 && playerNum == 1) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
         }
         
@@ -38,7 +47,7 @@ private MancalaDataStructure gameBoard = getDataStructure();
     }
     
     @Override
-    public int distributeStones(int startingPoint){
+    public int distributeStones(final int startingPoint){
         int whichStore = 0;
         System.out.println("Starting point:" + startingPoint);
         if (startingPoint >= 1 && startingPoint <= 6) {
@@ -56,9 +65,10 @@ private MancalaDataStructure gameBoard = getDataStructure();
         for (int i = 0; i < distributing; i++){
             currentSpot = gameBoard.next();
             currentSpot.addStone();
-            System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+            System.out.println("Iterator in loop = " + gameBoard.getIterator());
+            System.out.println("Pit #" + placeHolder + " with " + getNumStones(placeHolder) + "stones");
             placeHolder++;
-            if (placeHolder >= 13) {
+            if (placeHolder >= THIRTEEN) {
                 placeHolder = 1;
             }
         }
@@ -66,15 +76,12 @@ private MancalaDataStructure gameBoard = getDataStructure();
  
         final int stoppingPoint = gameBoard.getIterator()+1; // stopping point will just be index
         System.out.println("iteratorPos = " + stoppingPoint);
-        if ((stoppingPoint >= 1 && stoppingPoint <= 6) && whichStore == 1){ // on ending pit, call capture stones
-            if (getNumStones(stoppingPoint) == 1) {
-                distributing += captureStones(stoppingPoint);
-            }           
-        } else if ((stoppingPoint >= 8 && stoppingPoint <= 13) && whichStore == 2){
-            if (getNumStones(stoppingPoint-1) == 1) {
-                distributing += captureStones(stoppingPoint-1);
-            }   
+        if (stoppingPoint >= 1 && stoppingPoint <= 6 && whichStore == 1 && getNumStones(stoppingPoint) == ONE){ // on ending pit, call capture stones
+            distributing += captureStones(stoppingPoint);   
+        } else if (stoppingPoint >= 8 && stoppingPoint <= 13 && whichStore == 2 && getNumStones(stoppingPoint-1) == ONE){
+            distributing += captureStones(stoppingPoint-1);
         }
+        System.out.println("Pit 1 = " + getNumStones(1) + " Pit 12 = " + getNumStones(12));
         return distributing; // returns total number distributed
     }
 
@@ -83,7 +90,7 @@ private MancalaDataStructure gameBoard = getDataStructure();
         final int min = 1;
         final int max = 12;
         final int correspondingNum = max - stoppingPoint + min;
-        final int captured = gameBoard.removeStones(correspondingNum); // put stones in correct store
+        final int captured = gameBoard.removeStones(correspondingNum) + gameBoard.removeStones(stoppingPoint); // put stones in correct store
         if (stoppingPoint >= 1 && stoppingPoint <=6){
             gameBoard.addToStore(1, captured);
         } else if (stoppingPoint >= 7 && stoppingPoint <=12){

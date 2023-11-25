@@ -7,6 +7,8 @@ public class Player implements Serializable{
     private String playerName;
     private Store playerStore;
 
+    private static final long serialVersionUID = -6913182525731495042L;
+
     public Player(){
         playerName = "Default player";
     }

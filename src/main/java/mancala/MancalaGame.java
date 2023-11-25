@@ -10,10 +10,12 @@ public class MancalaGame implements Serializable {
     private Player currentPlayer;
     private GameRules gameRules;
 
+    private static final long serialVersionUID = -2050628086373019704L;
+
     public MancalaGame(){
         players = new ArrayList<>(2);
         gameRules = new AyoRules();
-        gameRules.getDataStructure().setUpPits(); // tentative call
+        //gameRules.getDataStructure().setUpPits(); // tentative call
     }
 
     /* 
@@ -58,10 +60,7 @@ public class MancalaGame implements Serializable {
         return gameRules;
     }
     
-    public int getNumStones(final int pitNum) throws PitNotFoundException {
-        if (pitNum > 12 || pitNum < 1){
-            throw new PitNotFoundException("Pit not found!");
-        }
+    public int getNumStones(final int pitNum) {
         return gameRules.getNumStones(pitNum);
     }
     public int move(final int startPit) throws InvalidMoveException{
@@ -74,13 +73,16 @@ public class MancalaGame implements Serializable {
         }*/
         int beforeMove = 0;
         int afterMove = 0;
+        //gameRules.getDataStructure().addStones(6, 4);
+        //gameRules.getDataStructure().removeStones(1);
+
         if (startPit >= 1 && startPit <= 6) {
             //setCurrentPlayer(players.get(0));
             beforeMove = gameRules.getDataStructure().getStoreCount(1);
             afterMove = gameRules.moveStones(startPit, 1);
         } else if (startPit >= 7 && startPit <= 12) {
             //setCurrentPlayer(players.get(1));
-            beforeMove =gameRules.getDataStructure().getStoreCount(2);
+            beforeMove = gameRules.getDataStructure().getStoreCount(2);
             afterMove = gameRules.moveStones(startPit, 2);
         }
         
