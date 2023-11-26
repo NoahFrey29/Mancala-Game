@@ -23,31 +23,31 @@ public class UserProfile implements Serializable{
     public String getUsername(){
         return userName;
     }
-    void setUsername(final String name){
+    /* default */ void setUsername(final String name){
         userName = name;
     }
     public int getKalahPlayed(){
         return kalahGames;
     }
-    void setKalahPlayed(final int games){
+    /* default */ void setKalahPlayed(final int games){
         kalahGames = games;
     }
     public int getAyoPlayed(){
         return ayoGames;
     }
-    void setAyoPlayed(final int games){
+    /* default */ void setAyoPlayed(final int games){
         ayoGames = games;
     }
     public int getKalah(){
         return kalahWon;
     }
-    void setkalahWon(final int wins){
+    /* default */ void setkalahWon(final int wins){
         kalahWon = wins;
     }
     public int getAyo(){
         return ayoWon;
     }
-    void setayoWon(final int wins){
+    /* default */ void setayoWon(final int wins){
         ayoWon = wins;
     }
     

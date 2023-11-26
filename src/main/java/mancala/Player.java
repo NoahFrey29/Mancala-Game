@@ -19,11 +19,11 @@ public class Player implements Serializable{
     public String getName(){
         return playerName;
     }
-    void setName(final String name){
+    /* default */ void setName(final String name){
         playerName = name;
     }
 
-    void setStore(final Store store){
+    /* default */ void setStore(final Store store){
         playerStore = store;
     }
     public Store getStore() {

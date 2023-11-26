@@ -16,7 +16,6 @@ public class Saver implements Serializable{
         final ObjectOutputStream objectDest = new ObjectOutputStream(fileOut);
         try {
             objectDest.writeObject(toSave);
-            System.out.println("Object has been serialized :)");
         } catch (IOException err) {
             System.out.println(err.getMessage());
         } finally {
@@ -32,9 +31,9 @@ public class Saver implements Serializable{
         try {
             obj = (Serializable) inputDest.readObject();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         } catch (ClassNotFoundException err) {
-            System.out.println(err.getMessage());
+            err.printStackTrace();
         } finally {
             inputDest.close();
             fileIn.close();

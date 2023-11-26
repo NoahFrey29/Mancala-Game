@@ -9,6 +9,10 @@ public class MancalaGame implements Serializable {
     private final ArrayList<Player> players;
     private Player currentPlayer;
     private GameRules gameRules;
+    private Player retPlayer = null;
+    private boolean gameOver = false;
+    private int beforeMove = 0;
+    private int afterMove = 0;
 
     private static final long serialVersionUID = -2050628086373019704L;
 
@@ -71,8 +75,6 @@ public class MancalaGame implements Serializable {
         } else if ((startPit >= 7 && startPit <= 12) && player.equals(stores.get(0).getOwner())) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
         }*/
-        int beforeMove = 0;
-        int afterMove = 0;
         //gameRules.getDataStructure().addStones(12, 2);
         //gameRules.getDataStructure().removeStones(1);
 
@@ -85,9 +87,7 @@ public class MancalaGame implements Serializable {
             beforeMove = gameRules.getDataStructure().getStoreCount(2);
             afterMove = gameRules.moveStones(startPit, 2);
         }
-        
         // while loop that checks for free turns
-
         // change current player at the end of the successful turn
         return afterMove-beforeMove;
     }
@@ -99,26 +99,23 @@ public class MancalaGame implements Serializable {
     }
 
     public Player getWinner() throws GameNotOverException{
-        
         if (!isGameOver()) {
             throw new GameNotOverException();
         }
         if (players.get(0).getStoreCount() > players.get(1).getStoreCount()) {
-            return players.get(0);
+            retPlayer = players.get(0);
         } else if (players.get(0).getStoreCount() < players.get(1).getStoreCount()) {
-            return players.get(1);
-        } else {//(tie)
-            return null;
+            retPlayer = players.get(1);
         }
+        return retPlayer;
     }
     public boolean isGameOver() {
-        
         if (gameRules.isSideEmpty(1)) {
-            return true;
+            gameOver = true;
         } else if (gameRules.isSideEmpty(7)){
-            return true;
+            gameOver = true;
         } 
-        return false;
+        return gameOver;
     }
     public void startNewGame() {
         gameRules.resetBoard(); // set board and initialize? Reset?

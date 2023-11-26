@@ -14,7 +14,7 @@ public class Store implements Countable, Serializable{
         playerUser = new Player();
     }
 
-    void setOwner(final Player player){
+    /* default */ void setOwner(final Player player){
         playerUser = player;
     }
     public Player getOwner(){
