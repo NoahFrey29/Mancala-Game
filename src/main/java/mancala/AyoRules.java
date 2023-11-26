@@ -40,6 +40,7 @@ public class AyoRules extends GameRules implements Serializable {
     @Override
     public int distributeStones(final int startingPoint){
         int whichStore = 0;
+        boolean storeFlag = false;
         System.out.println("Starting point:" + startingPoint);
         if (startingPoint >= 1 && startingPoint <= 6) {
             //startingPoint--; // doing what pitPos is supposed to do but its private :/
@@ -49,61 +50,64 @@ public class AyoRules extends GameRules implements Serializable {
         }
         int distributing = 0;
         int looper = 0;
-        int placeHolder = startingPoint;
         System.out.println("whichStore = " + whichStore);
         
-        gameBoard.setIterator(startingPoint, whichStore, true);
+        int placeHolder = startingPoint;
         Countable currentSpot;
         do {
             looper = gameBoard.removeStones(placeHolder);
-            System.out.println("Removing stones at pit " + placeHolder + "...");
+            System.out.println("Removing stones at pit " + (placeHolder) + "...");
+            placeHolder++;
             distributing += looper;
             while (looper > 0){
                 if (placeHolder == startingPoint) {
-                    placeHolder++;
+                    //currentSpot = gameBoard.next();
                     System.out.println("Skipping pit that was started on for placeholder...");
                     System.out.println("Placeholder:" + placeHolder);
-                } else {
-
-                    if (whichStore == 1 && placeHolder == 7) {
+                    placeHolder++;
+                } 
+                if (whichStore == 1 && placeHolder == 7) {
                     System.out.println("Going to add to store #1");
-                    currentSpot = gameBoard.next();
-                    currentSpot.addStone();
+                    gameBoard.addToStore(1, 1);
                     looper--;
+                    if (looper == 0) {
+                        storeFlag = true;
+                    }
                     //System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
                 } else if (whichStore == 2 && placeHolder == THIRTEEN) {
                     System.out.println("Going to add to store #2");
-                    currentSpot = gameBoard.next();
-                    currentSpot.addStone();
+                    gameBoard.addToStore(2, 1);
                     //System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
                     if (placeHolder >= THIRTEEN) {
                         placeHolder = 1;
                     }
                     looper--;
+                    if (looper == 0) {
+                        storeFlag = true;
+                    }
                 } 
                 if (looper > 0) {
-                    System.out.println("Going to add to a pit");
-                    currentSpot = gameBoard.next();
-                    currentSpot.addStone();
-                    placeHolder++;
                     if (placeHolder >= THIRTEEN) {
                         placeHolder = 1;
                     }
+                    System.out.println("Going to add to a pit");
+                    gameBoard.addStones(placeHolder, 1);
                     System.out.println("Pit #" + placeHolder + "with " + getNumStones(placeHolder) + "stones");
+                    placeHolder++;
                     looper--;
-                }
+                    if (looper == 0) {
+                        placeHolder--;
+                    }
                 }
             }
             System.out.println("Ending pit #" + placeHolder);
             System.out.println("The current board looks like");
-            
             System.out.println(toString());
-        } while (getNumStones(placeHolder) != 0);
+        } while (getNumStones(placeHolder) != 1 && storeFlag == false);
 
         System.out.println("Ending pit #" + placeHolder);
  
-        final int stoppingPoint = gameBoard.getIterator()+1; // stopping point will just be index
-        System.out.println("iteratorPos = " + stoppingPoint);
+        final int stoppingPoint = placeHolder; // stopping point will just be index
         if (stoppingPoint >= 1 && stoppingPoint <= 6 && whichStore == 1 && getNumStones(stoppingPoint) == 1){ // on ending pit, call capture stones
             distributing += captureStones(stoppingPoint);     
         } else if (stoppingPoint >= 7 && stoppingPoint <= 12 && whichStore == 2 && getNumStones(stoppingPoint) == 1){

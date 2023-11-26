@@ -73,7 +73,7 @@ public class MancalaGame implements Serializable {
         }*/
         int beforeMove = 0;
         int afterMove = 0;
-        //gameRules.getDataStructure().addStones(6, 4);
+        //gameRules.getDataStructure().addStones(12, 2);
         //gameRules.getDataStructure().removeStones(1);
 
         if (startPit >= 1 && startPit <= 6) {

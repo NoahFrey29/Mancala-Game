@@ -34,7 +34,7 @@ public abstract class GameRules {
      *
      * @return The MancalaDataStructure.
      */
-    MancalaDataStructure getDataStructure() {
+    /* default */ MancalaDataStructure getDataStructure() {
         return gameBoard;
     }
 
