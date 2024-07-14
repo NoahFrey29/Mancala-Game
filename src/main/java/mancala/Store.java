@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Store implements Countable, Serializable{
 
+    private static final long serialVersionUID = 8197403145304665358L;
+
     private Player playerUser;
     private int storeStones;
 
@@ -12,32 +14,33 @@ public class Store implements Countable, Serializable{
         playerUser = new Player();
     }
 
-    void setOwner(final Player player){
+    /* default */ void setOwner(final Player player){
         playerUser = player;
     }
     public Player getOwner(){
         return playerUser;
     }
 
+    @Override
     public void addStones(final int amount) {
         storeStones += amount;
-    }
-    public int getTotalStones(){
-        return storeStones;
     }
     public int emptyStore(){
         final int temp = storeStones;
         storeStones = 0;
         return temp;
     }
+    @Override
     public void addStone(){
         storeStones++;
     }
+    @Override
     public int getStoneCount(){
         return storeStones;
     }
+    @Override
     public int removeStones(){
-        return 0;
+        return emptyStore();
     }
 
     @Override

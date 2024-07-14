@@ -2,7 +2,6 @@ package ui;
 
 import mancala.MancalaGame;
 import mancala.InvalidMoveException;
-import mancala.PitNotFoundException;
 import mancala.Player;
 import mancala.Saver;
 import java.io.IOException;
@@ -77,8 +76,8 @@ public class TextUI implements Serializable{
                 }
             }
             
-            
-            System.out.println("Current player = " + getCurrentPlayer());
+            System.out.println(textGame.getCurrentPlayer());
+            System.out.println("Current player = " + textGame.getCurrentPlayer());
 
         }
         

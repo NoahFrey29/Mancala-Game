@@ -9,31 +9,34 @@ import java.io.ObjectInputStream;
 
 public class Saver implements Serializable{
     
-    public static void saveObject(Serializable toSave, String filename) throws IOException{
+    private static final long serialVersionUID = -1738658540040834404L;
+
+    public static void saveObject(final Serializable toSave, final String filename) throws IOException{
+        final FileOutputStream fileOut = new FileOutputStream(filename);
+        final ObjectOutputStream objectDest = new ObjectOutputStream(fileOut);
         try {
-            FileOutputStream fileOut = new FileOutputStream(filename);
-            ObjectOutputStream objectDest = new ObjectOutputStream(fileOut);
             objectDest.writeObject(toSave);
-            objectDest.close();
-            fileOut.close();
-            System.out.println("Object has been serialized :)");
         } catch (IOException err) {
             System.out.println(err.getMessage());
+        } finally {
+            objectDest.close();
+            fileOut.close();
         }
     }
 
-    public static Serializable loadObject(String filename) throws IOException, ClassNotFoundException {
+    public static Serializable loadObject(final String filename) throws IOException, ClassNotFoundException {
         Serializable obj = null;
+        final FileInputStream fileIn = new FileInputStream(filename);
+        final ObjectInputStream inputDest = new ObjectInputStream(fileIn);
         try {
-            FileInputStream fileIn = new FileInputStream(filename);
-            ObjectInputStream inputDest = new ObjectInputStream(fileIn);
             obj = (Serializable) inputDest.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException err) {
+            err.printStackTrace();
+        } finally {
             inputDest.close();
             fileIn.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
         }
         
         return obj;

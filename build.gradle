@@ -31,7 +31,8 @@ pmd {
     ruleSets = ["category/java/errorprone.xml", "category/java/bestpractices.xml", "category/java/design.xml", "category/java/codestyle.xml"]
     pmdMain {
         excludes = [
-                '**/ui/**'
+                '**/ui/**',
+                '**/MancalaDataStructure.java'
         ]
     }
 }

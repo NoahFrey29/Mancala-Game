@@ -8,26 +8,33 @@ public class MancalaGame implements Serializable {
     //private MancalaGame game;
     private final ArrayList<Player> players;
     private Player currentPlayer;
-    private Board gameBoard;
+    private GameRules gameRules;
+    private Player retPlayer = null;
+    private boolean gameOver = false;
+    private int beforeMove = 0;
+    private int afterMove = 0;
+
+    private static final long serialVersionUID = -2050628086373019704L;
 
     public MancalaGame(){
         players = new ArrayList<>(2);
-        gameBoard = new Board();
+        gameRules = new AyoRules();
+        //gameRules.getDataStructure().setUpPits(); // tentative call
     }
 
     /* 
     public void test() throws PitNotFoundException {
-        gameBoard.getPits().get(7).addStone();
-        gameBoard.distributeStones(8);
-        System.out.println("Initial board:" + gameBoard.toString());
+        gameRules.getPits().get(7).addStone();
+        gameRules.distributeStones(8);
+        System.out.println("Initial board:" + gameRules.toString());
 
-        //distribute = gameBoard.distributeStones(2);
-        //System.out.println("Initial board:" + gameBoard.toString());
-        //distribute = gameBoard.distributeStones(6);
-        //System.out.println("Initial board:" + gameBoard.toString());
+        //distribute = gameRules.distributeStones(2);
+        //System.out.println("Initial board:" + gameRules.toString());
+        //distribute = gameRules.distributeStones(6);
+        //System.out.println("Initial board:" + gameRules.toString());
         try {
-            gameBoard.distributeStones(12);
-        System.out.println("Initial board:" + gameBoard.toString());
+            gameRules.distributeStones(12);
+        System.out.println("Initial board:" + gameRules.toString());
         } catch(IndexOutOfBoundsException err){
             System.out.println(err.getMessage());
         }
@@ -35,7 +42,7 @@ public class MancalaGame implements Serializable {
     }*/
 
     public void setPlayers(final Player onePlayer, final Player twoPlayer) {
-        gameBoard.registerPlayers(onePlayer, twoPlayer);
+        gameRules.registerPlayers(onePlayer, twoPlayer);
         players.add(onePlayer);
         players.add(twoPlayer);
         currentPlayer = onePlayer; // set current player to the first one always
@@ -49,19 +56,16 @@ public class MancalaGame implements Serializable {
     public void setCurrentPlayer(final Player player) {
         currentPlayer = player;
     }
-
-    void setBoard(final Board theBoard){
-        gameBoard = theBoard;
+    
+    void setBoard(final GameRules theBoard){
+        gameRules = theBoard;
     }
-    public Board getBoard(){
-        return gameBoard;
+    public GameRules getBoard(){
+        return gameRules;
     }
-
-    public int getNumStones(final int pitNum) throws PitNotFoundException {
-        if (pitNum > 12 || pitNum < 1){
-            throw new PitNotFoundException("Pit not found!");
-        }
-        return gameBoard.getPits().get(pitNum).getStoneCount();
+    
+    public int getNumStones(final int pitNum) {
+        return gameRules.getNumStones(pitNum);
     }
     public int move(final int startPit) throws InvalidMoveException{
         if (startPit > 12 || startPit < 1){
@@ -71,20 +75,19 @@ public class MancalaGame implements Serializable {
         } else if ((startPit >= 7 && startPit <= 12) && player.equals(stores.get(0).getOwner())) {
             throw new InvalidMoveException("You do not have access to this side of the board!");
         }*/
-        int beforeMove = 0;
-        int afterMove = 0;
+        //gameRules.getDataStructure().addStones(12, 2);
+        //gameRules.getDataStructure().removeStones(1);
+
         if (startPit >= 1 && startPit <= 6) {
             //setCurrentPlayer(players.get(0));
-            beforeMove = currentPlayer.getStoreCount();
-            afterMove = gameBoard.moveStones(startPit, currentPlayer);
+            beforeMove = gameRules.getDataStructure().getStoreCount(1);
+            afterMove = gameRules.moveStones(startPit, 1);
         } else if (startPit >= 7 && startPit <= 12) {
             //setCurrentPlayer(players.get(1));
-            beforeMove = currentPlayer.getStoreCount();
-            afterMove = gameBoard.moveStones(startPit, currentPlayer);
+            beforeMove = gameRules.getDataStructure().getStoreCount(2);
+            afterMove = gameRules.moveStones(startPit, 2);
         }
-        
         // while loop that checks for free turns
-
         // change current player at the end of the successful turn
         return afterMove-beforeMove;
     }
@@ -96,32 +99,26 @@ public class MancalaGame implements Serializable {
     }
 
     public Player getWinner() throws GameNotOverException{
-        
         if (!isGameOver()) {
             throw new GameNotOverException();
         }
         if (players.get(0).getStoreCount() > players.get(1).getStoreCount()) {
-            return players.get(0);
+            retPlayer = players.get(0);
         } else if (players.get(0).getStoreCount() < players.get(1).getStoreCount()) {
-            return players.get(1);
-        } else {//(tie)
-            return null;
+            retPlayer = players.get(1);
         }
+        return retPlayer;
     }
     public boolean isGameOver() {
-        try {
-            if (gameBoard.isSideEmpty(1)) {
-                return true;
-            } else if (gameBoard.isSideEmpty(7)){
-                return true;
-            }
-        } catch (PitNotFoundException err){
-            System.out.println(err.getMessage());
+        if (gameRules.isSideEmpty(1)) {
+            gameOver = true;
+        } else if (gameRules.isSideEmpty(7)){
+            gameOver = true;
         } 
-        return false;
+        return gameOver;
     }
     public void startNewGame() {
-        gameBoard.resetBoard(); // set board and initialize? Reset?
+        gameRules.resetBoard(); // set board and initialize? Reset?
     }
     
     @Override
@@ -130,7 +127,7 @@ public class MancalaGame implements Serializable {
         gameString.append("Current Player: ").append(currentPlayer.getName()).append("\n");
         gameString.append("Player 1: ").append(players.get(0).getName()).append("\n");
         gameString.append("Player 2: ").append(players.get(1).getName()).append("\n");
-        gameString.append(gameBoard.toString());
+        gameString.append(gameRules.toString());
         return gameString.toString();
     }
     

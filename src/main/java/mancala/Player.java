@@ -7,6 +7,8 @@ public class Player implements Serializable{
     private String playerName;
     private Store playerStore;
 
+    private static final long serialVersionUID = -6913182525731495042L;
+
     public Player(){
         playerName = "Default player";
     }
@@ -17,18 +19,18 @@ public class Player implements Serializable{
     public String getName(){
         return playerName;
     }
-    void setName(final String name){
+    /* default */ void setName(final String name){
         playerName = name;
     }
 
-    void setStore(final Store store){
+    /* default */ void setStore(final Store store){
         playerStore = store;
     }
     public Store getStore() {
         return playerStore;
     }
     public int getStoreCount() {
-        return playerStore.getTotalStones();
+        return playerStore.getStoneCount();
     }
 
     public void addStoreCount(final Player player, final int amount) {
@@ -38,7 +40,7 @@ public class Player implements Serializable{
 
     @Override
     public String toString() {
-        return "Player: " + playerName + "\nStore: " + playerStore;
+        return "Player: " + playerName;// + "\nStore: " + playerStore.getStoneCount(); // gives error
     }
 
 }

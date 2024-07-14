@@ -1,25 +1,23 @@
 # Project Title - Mancala Game
 
-This is an object oriented mancala game that allows users to play a text based version of Mancala,
-according to "capture" rules.
+This is an object oriented mancala game that allows users to play a graphics based version of Mancala,
+according to either Kalah or Ayo rules.
 
 ## Description
 
 This project has full data functionality with accessors and mutators for all private variables, allowing other classes
-to modify data. Methods are created for Pit, Player, Store, Board, and MancalaGame classes, as well as exception classes
-and a TextUI that manages what the users see. Lastly, an overriden toString method is present in every class and managed by
-TextUI. JUnit test cases that were given pass for all classes except Board, where the Board test cases written by me cover
-the required methods.
+to modify data. Methods are created for Pit, Player, Store, and MancalaGame classes, as well as exception classes
+and a GUI that manages what the users see. The Board class from assignment 2 has been split into a GameRules and MancalaDataStructure
+classes, where GamesRules has the main game logic represented in abstract Kalah and Ayo rule classes. A countable interface is
+also implemented to take away the ambiguity of pits and stores. Lastly, the program has the ability to serialize all objects
+in order for the user to save the game in between sessions.
 
 ## Getting Started
 
 ### Dependencies
 
-In a folder similar to GP1, you will need gradle and checkstyle to run this code
+You will need gradle and the pmd plugin for gradle to run this code
 Version 17 of the JDK was used for this assignment
-
-**NOTE** No AI was used in my solution of the code. After completing my AI solution,
-I opted to rely solely on myself to create a fully functional game
 
 ### Executing program
 
@@ -43,6 +41,8 @@ As of the final version of this project, there should be no errors or issues wit
 however there a couple small rules this game does not implement:
 - When a player's side is empty, all the stones on the other side go into the opponent's store
 - Players can choose an empty pit on their own side as a valid move
+- Serialization may not work depending on where the user saves the file
+- GUI is not complete
 
 **If there is an issue with submission, please contact me at the info found below**
 
@@ -56,19 +56,16 @@ Email: nfrey01@uoguelph.ca
 
 Commit and pushing log:
 
-Oct. 17th: Started with creating function stubs and folder structure
-Oct. 19th: Completed Pit, Player, and Store classes
-Oct. 21st: Continued with code progress, changed file structure to be correct
-Oct. 22nd: Created an AI solution
-Oct. 23rd: Fixed AI solution folders, continued with coding
-Oct. 24th: Completed most of Board
-Oct. 25th: Pushed for bonus marks
-Oct. 26th: Implemented exception classes and exception handling
-Oct. 27th: Tested with given JUnit tests, began working on self-made JUnit cases too
-Oct. 28th: Began TextUI, finished JUnit work
-Oct. 29th: Finished TextUI, began code review
-Oct. 30th: Finished code review, added last minute functionalities
-Nov. 1st: Finished README and completed interview
+Nov. 13th: Starting refactoring and working with PMD
+Nov. 16th: Created responsibility matrices
+Nov. 20th: Implemented abstract classes and began working with countable interface
+Nov. 21st: Refactored all secondary classes
+Nov. 22th: Completed and pushed serialization methods
+Nov. 23rd: Finished a bugged version of Kalah, began working on Ayo
+Nov. 24th: Completed Kalah, Ayo work continues, work on GUI begins
+Nov. 25th: Kalah test cases pass, continuing with GUI
+Nov. 26th: Ayo test cases pass completing Ayo, completed PMD refactoring, pushed assets folder, completed semi-functional GUI
+
 
 ## Acknowledgments
 
