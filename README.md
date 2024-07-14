@@ -32,8 +32,6 @@ gradle echo
 * copy the last line that is outputted from gradle echo. This will execute the program.
 * Paste the line to run the program.
 
-* Expected Output:
-
 
 ## Limitations
 
@@ -42,7 +40,6 @@ however there a couple small rules this game does not implement:
 - When a player's side is empty, all the stones on the other side go into the opponent's store
 - Players can choose an empty pit on their own side as a valid move
 - Serialization may not work depending on where the user saves the file
-- GUI is not complete
 
 **If there is an issue with submission, please contact me at the info found below**
 
